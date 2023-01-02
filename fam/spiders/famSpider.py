@@ -3,10 +3,10 @@ from scrapy.linkextractors import LinkExtractor
 
 class FamSpider(CrawlSpider):
     name = "famspider"
-    allowed_domains = ['famproperties.com']
-    start_urls = ["https://famproperties.com/"]
+    allowed_domains = ['propertyfinder.ae']
+    start_urls = ["https://www.propertyfinder.ae/"]
     rules = (
-        Rule(LinkExtractor(allow="blog",),callback = "parse_blog"),
+        # Rule(LinkExtractor(allow="blog",),callback = "parse_blog"),
         Rule(LinkExtractor(allow="buy",deny="properties-for-sale.html"),callback = "parse_buy"),
         Rule(LinkExtractor(), follow=True),
 
@@ -15,8 +15,8 @@ class FamSpider(CrawlSpider):
 
     def parse_blog(self, response):
         yield {
-            "title" : response.css('#project h1::text').get(),
-            "description" : response.css('#R12848563557498805588_report li .t-Comments-body .t-Comments-comment::text').get()
+            "title" : response.css('.entry-title::text').get(),
+            "description" : response.css('.entry-content::text').get()
         }
 
     def parse_buy(self,response):
